@@ -37,7 +37,7 @@
     }
   },
   "ActionContainers": {
-    "solve": "ghcr.io/ashish-ramrakhiani/github-actions-julia:diffeq",
+    "solve": "ghcr.io/ashish-ramrakhiani/github-actions-julia:2.1.0",
     "getData": "izzylerman/faasr-github-actions-python:latest",
     "processData": "izzylerman/faasr-github-actions-r:latest"
   },
