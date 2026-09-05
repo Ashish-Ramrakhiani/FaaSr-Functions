@@ -1,0 +1,123 @@
+{
+  "WorkflowName": "fcre-glm-aed-flare-rs",
+  "FunctionInvoke": "start",
+  "DefaultDataStore": "My_S3_Bucket",
+  "LoggingDataStore": "My_S3_Bucket",
+  "FaaSrLog": "FaaSrLog_fcre_glm_aed_flare_rs",
+  "ComputeServers": {
+    "GH": {
+      "FaaSType": "GitHubActions",
+      "UserName": "<your-github-username>",
+      "ActionRepoName": "FaaSr-workflow-public",
+      "Branch": "k8s-jack-test",
+      "UseSecretStore": true
+    },
+    "K8s": {
+      "FaaSType": "Kubernetes",
+      "Endpoint": "https://<nrp-api-server>",
+      "Namespace": "<your-namespace>",
+      "UseSecretStore": false,
+      "AllowSelfSignedCertificate": true,
+      "SSLCertificate": "<base64 CA cert from your kubeconfig>",
+      "MaxCPU": 2000,
+      "MaxMemory": 8000,
+      "TimeLimit": 1800,
+      "AdditionalTimeToLive": 3600,
+      "NumberOfRetries": 1
+    }
+  },
+  "DataStores": {
+    "My_S3_Bucket": {
+      "Endpoint": "https://s3.us-west-2.amazonaws.com",
+      "Bucket": "faasr-bucket-0001",
+      "Region": "us-west-2",
+      "Writable": "TRUE"
+    },
+    "inflow_drivers": {
+      "Endpoint": "https://amnh1.osn.mghpcc.org",
+      "Bucket": "bio230121-bucket01",
+      "Region": "us-east-1",
+      "Writable": "TRUE"
+    },
+    "drivers": {
+      "Endpoint": "https://amnh1.osn.mghpcc.org",
+      "Bucket": "bio230121-bucket01",
+      "Region": "us-east-1",
+      "Writable": "TRUE"
+    },
+    "targets": {
+      "Endpoint": "https://amnh1.osn.mghpcc.org",
+      "Bucket": "bio230121-bucket01",
+      "Region": "us-east-1",
+      "Writable": "TRUE"
+    },
+    "forecasts_parquet": {
+      "Endpoint": "https://amnh1.osn.mghpcc.org",
+      "Bucket": "bio230121-bucket01",
+      "Region": "us-east-1",
+      "Writable": "TRUE"
+    },
+    "restart": {
+      "Endpoint": "https://amnh1.osn.mghpcc.org",
+      "Bucket": "bio230121-bucket01",
+      "Region": "us-east-1",
+      "Writable": "TRUE"
+    },
+    "scores": {
+      "Endpoint": "https://amnh1.osn.mghpcc.org",
+      "Bucket": "bio230121-bucket01",
+      "Region": "us-east-1",
+      "Writable": "TRUE"
+    },
+    "vera4cast_targets": {
+      "Endpoint": "https://amnh1.osn.mghpcc.org",
+      "Bucket": "bio230121-bucket01",
+      "Region": "us-east-1",
+      "Anonymous": "TRUE"
+    },
+    "vera4cast_forecasts": {
+      "Endpoint": "https://amnh1.osn.mghpcc.org",
+      "Bucket": "bio230121-bucket01",
+      "Region": "us-east-1",
+      "Anonymous": "TRUE"
+    }
+  },
+  "ActionList": {
+    "run-fcre-aed-forecast": {
+      "FunctionName": "run_fcre_aed_forecast",
+      "FaaSServer": "K8s",
+      "Type": "R",
+      "Arguments": {
+        "config_set_name": "glm_aed_flare_rs",
+        "configure_run_file": "configure_run.yml"
+      },
+      "InvokeNext": []
+    },
+    "start": {
+      "FunctionName": "create_sample_data",
+      "FaaSServer": "GH",
+      "Type": "R",
+      "Arguments": {
+        "folder": "tutorial",
+        "output1": "sample1.csv",
+        "output2": "sample2.csv"
+      },
+      "InvokeNext": [
+        "run-fcre-aed-forecast"
+      ]
+    }
+  },
+  "ActionContainers": {
+    "run-fcre-aed-forecast": "docker.io/<namespace>/github-actions-glm-aed-flare-rs-k8s:latest",
+    "start": "docker.io/ramrakha/kubernetes-r:main"
+  },
+  "FunctionGitRepo": {
+    "run_fcre_aed_forecast": [
+      "Ashish-Ramrakhiani/FCRE-forecast-code"
+    ],
+    "create_sample_data": "FaaSr/FaaSr-Functions/tutorial"
+  },
+  "FunctionGitRepoBranch": {
+    "run_fcre_aed_forecast": "flare_nrp_demo"
+  }
+}
