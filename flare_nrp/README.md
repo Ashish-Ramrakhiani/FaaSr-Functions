@@ -19,11 +19,13 @@ start (GitHub Actions)  ──▶  run-fcre-aed-forecast (Kubernetes)
 | **Forecast function** | `run_fcre_aed_forecast` from [`FLARE-forecast/FCRE-forecast-code`](https://github.com/FLARE-forecast/FCRE-forecast-code) (referenced via `FunctionGitRepo`). |
 | **Data stores** | The FCRE object stores (met/inflow drivers, targets, forecast/score outputs, restart) on OSN, plus a scratch bucket — all with `UseSecretStore: false` so their credentials reach the pod. |
 
+> **Note — unlike the other examples, this folder ships only the workflow config, not the function code.** The forecast entry function `run_fcre_aed_forecast` and the GLM-AED model it drives live in the large external [`FLARE-forecast/FCRE-forecast-code`](https://github.com/FLARE-forecast/FCRE-forecast-code) repository (referenced via `FunctionGitRepo`), so it isn't vendored here.
+
 ## Running it
 
 Prerequisites: NRP access with a namespace, and the FaaSr Kubernetes secrets set up in your FaaSr-workflow repo. The **[Running FaaSr on NRP](https://faasr.io)** walkthrough has the full step-by-step (tokens, CA cert, endpoint, secrets); this example is the "section 11" worked case from that guide. Then:
 
-1. Put `fcre_glm_aed_flare_rs_k8s.json` (this directory) in your FaaSr-workflow repo and fill in the placeholders: your namespace, API-server endpoint, base64 CA cert, GitHub username, and the FLARE image.
+1. Put `flare_nrp.json` (this directory) in your FaaSr-workflow repo and fill in the placeholders: your namespace, API-server endpoint, base64 CA cert, GitHub username, and the FLARE image.
 2. **Register** the workflow (allow custom containers — the FLARE image is not a native FaaSr image).
 3. **Invoke.** The GitHub Actions entry action submits one Kubernetes Job into your namespace.
 4. **Watch:** `kubectl get jobs,pods -n <namespace> -w`, and `kubectl logs <pod> -n <namespace>`.
