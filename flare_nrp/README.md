@@ -45,5 +45,5 @@ Each forecast cycle advances one reference date and writes a restart to S3. A fu
 ## Notes
 
 - **`UseSecretStore: false` on the Kubernetes server** is required — it's how the pod receives the S3 credentials.
-- The forecast entry function currently lives on a branch of FCRE-forecast-code (see [PR #92](https://github.com/FLARE-forecast/FCRE-forecast-code/pull/92)). FaaSr `git clone`s the **default branch** of a `FunctionGitRepo` — point the repo's default branch (or your fork's) at the branch you're using.
+- This config points `FunctionGitRepo` at the canonical `FLARE-forecast/FCRE-forecast-code`. The entry function `run_fcre_aed_forecast` is not on that repo's `main` yet — it's in [PR #92](https://github.com/FLARE-forecast/FCRE-forecast-code/pull/92). **Until #92 merges, point `FunctionGitRepo` at a fork whose default branch carries the entry function and the `subm_height` fix below.** Note that FaaSr `git clone`s the **default branch** of a full-repo `FunctionGitRepo` (it does not honor `FunctionGitRepoBranch` for repo clones), so the branch you want must be that repo's default.
 - The GLM binary uses the current namelist schema (`subm_height` for submerged inflows). Older FCRE configs using `subm_elev` need that variable renamed, or GLM aborts with `Base nml missing the following variable name: subm_height`.

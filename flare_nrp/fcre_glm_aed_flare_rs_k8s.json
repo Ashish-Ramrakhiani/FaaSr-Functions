@@ -8,8 +8,8 @@
     "GH": {
       "FaaSType": "GitHubActions",
       "UserName": "<your-github-username>",
-      "ActionRepoName": "FaaSr-workflow-public",
-      "Branch": "k8s-jack-test",
+      "ActionRepoName": "FaaSr-workflow",
+      "Branch": "main",
       "UseSecretStore": true
     },
     "K8s": {
@@ -109,15 +109,15 @@
   },
   "ActionContainers": {
     "run-fcre-aed-forecast": "docker.io/<namespace>/github-actions-glm-aed-flare-rs-k8s:latest",
-    "start": "docker.io/ramrakha/kubernetes-r:main"
+    "start": "docker.io/faasr/kubernetes-r:latest"
   },
   "FunctionGitRepo": {
     "run_fcre_aed_forecast": [
-      "Ashish-Ramrakhiani/FCRE-forecast-code"
+      "FLARE-forecast/FCRE-forecast-code"
     ],
     "create_sample_data": "FaaSr/FaaSr-Functions/tutorial"
   },
   "FunctionGitRepoBranch": {
-    "run_fcre_aed_forecast": "flare_nrp_demo"
+    "run_fcre_aed_forecast": "main"
   }
 }
